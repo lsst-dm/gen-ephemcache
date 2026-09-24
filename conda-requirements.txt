@@ -1,0 +1,21 @@
+# conda-requirements.txt
+# Ephemerides cache generator conda dependencies
+
+# Core python packages
+python=3.13
+pandas=2.2
+pydantic
+pydantic-settings
+
+# Orbital mechanics and ephemerides
+sorcha=1.2.1
+assist>=0.9
+rebound>=4.0
+
+# Database
+sqlalchemy
+psycopg2
+
+# Utilities
+zstandard
+shapely
