@@ -114,14 +114,14 @@ RUN MAMBA=mamba ./install.sh ephemcache \
 # from a configuration file; the installed module has to be edited. The grep
 # both proves the substitution landed and records the effective URL in the
 # build log.
-ARG OBSCODES_URL=https://epyc.astro.washington.edu/~mjuric/obscodes_extended.json.gz
-RUN . /opt/conda/etc/profile.d/conda.sh && conda activate ephemcache \
- && CFG="$(python -c 'import sorcha.utilities.sorchaConfigs as m; print(m.__file__)')" \
- && sed -i "s|https://minorplanetcenter.net/Extended_Files/obscodes_extended.json.gz|${OBSCODES_URL}|" "$CFG" \
- && grep -n 'obscodes_extended' "$CFG" \
- && sorcha bootstrap --cache sorcha_cache \
- && chmod -R a+rX sorcha_cache \
- && ls -l sorcha_cache | head -3
+#ARG OBSCODES_URL=https://epyc.astro.washington.edu/~mjuric/obscodes_extended.json.gz
+#RUN . /opt/conda/etc/profile.d/conda.sh && conda activate ephemcache \
+# && CFG="$(python -c 'import sorcha.utilities.sorchaConfigs as m; print(m.__file__)')" \
+# && sed -i "s|https://minorplanetcenter.net/Extended_Files/obscodes_extended.json.gz|${OBSCODES_URL}|" "$CFG" \
+# && grep -n 'obscodes_extended' "$CFG" \
+# && sorcha bootstrap --cache sorcha_cache \
+# && chmod -R a+rX sorcha_cache \
+# && ls -l sorcha_cache | head -3
 
 # ephemcache.config is meant to be edited after install.sh seeds it with a
 # default; in a container this Dockerfile is the editor. install.sh writes
@@ -144,7 +144,7 @@ RUN . /opt/conda/etc/profile.d/conda.sh && conda activate ephemcache \
 # assignment would otherwise clobber whatever the pod sets, because the config
 # is sourced after the environment is in place.
 RUN sed -i \
-      -e "s|^MPCDB=.*|MPCDB=\"\${MPCDB:-postgresql+psycopg2://172.24.5.71/mpc_sbn}\"|" \
+      -e "s|^MPCDB=.*|MPCDB=\"\${MPCDB:-postgresql+psycopg2://mpcorb-db.slac.stanford.edu/mpc_sbn}\"|" \
       ephemcache.config \
  && grep -nE '^MPCDB|^ENV=|^KIND=' ephemcache.config
 
