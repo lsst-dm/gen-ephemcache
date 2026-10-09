@@ -83,6 +83,15 @@ RUN mkdir -p /app/outputs/caches \
  && mkdir -p /tmp/matplotlib \
  && chmod 1777 /tmp/matplotlib
 
+ # Create a non-root user
+RUN useradd -m appuser
+
+# Change ownership to non-root user
+RUN chown -R appuser:appuser /app /tmp/matplotlib
+
+# Switch to the non-root user.
+USER appuser
+
 # Make entrypoint executable
 RUN chmod +x /app/bin/container-entrypoint.sh
 
